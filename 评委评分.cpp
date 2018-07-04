@@ -143,7 +143,7 @@ void save()
 	FILE*fp; 
 	S_MESSAGE*p1=(S_MESSAGE*)malloc(LEN); 
 	p1=head; 
-	fp=fopen("参赛选手名单.txt","w"); 
+	fp=fopen("参赛选手名单.txt","a+"); 
 	fprintf(fp,"-------|-------\n"); 
 	fprintf(fp,"编号|姓名\n"); 
 	while(p1!=NULL) 
