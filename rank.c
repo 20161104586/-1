@@ -1,0 +1,47 @@
+#include "com.h" 
+void rank(int n) 
+{ 
+	S_MESSAGE*p1,*p2,*endpt,*p; 
+	n=0; 
+	p1=head; 
+	if(head==NULL&&tail==NULL) 
+	{ 
+		printf("\n-------当前信息记录为空-------\n"); 
+	} 
+	else 
+	{ 
+		p1=(S_MESSAGE*)malloc(LEN); 
+		p1->next=head; 
+		head=p1; 
+		for(endpt=NULL;endpt!=head;endpt=p) 
+	{ 
+			for(p=p1=head;p1->next->next!=endpt;p1=p1->next) 
+				{ 
+					if(p1->next->ave<p1->next->next->ave) 
+					{ 
+					p2=p1->next->next; 
+						p1->next->next=p2->next; 
+						p2->next=p1->next; 
+						p1->next=p2; 
+						p=p1->next->next; 
+					} 
+				}		 
+	} 
+	p1=head; 
+	head=head->next; 
+	free(p1); 
+	printf("\n--------选手成绩排名信息如下-------\n"); 
+	printf("-------|-------|-------|--------\n"); 
+	printf(" 编号| 姓名 | 平均成绩| 名次 \n"); 
+	p1=head; 
+	while(p1!=NULL) 
+		{ 
+			printf("-------|-------|-------|--------\n"); 
+			printf("%-9d%-9s%-9.1lf%-5d\n",p1->name,p1->name,p1->ave,n+1); 
+			n++; 
+			p1=p1->next; 
+		} 
+			printf("-------|-------|-------|--------\n"); 
+	} 
+		getchar(); 
+} 
