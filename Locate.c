@@ -79,8 +79,8 @@ void onput(seqlist *L,int x)
 void input(seqlist *L)
 {
 	int r,i,j;
-    printf("请输入1 存入选手信息: \n");
-    printf("请输入2 存入裁判信息: \n");
+    printf("输入1 存入选手信息: \n");
+    printf("输入2 存入裁判信息: \n");
     int x;
     scanf("%d",&x);
     if(x==1)
@@ -463,7 +463,6 @@ void quicksort(ElemType array[], int maxlen, int begin, int end)
 
 
 
-
 void save(seqlist *L)
 {
     FILE *fp;
@@ -474,7 +473,7 @@ void save(seqlist *L)
         return ;
     }
     int i,j;
-    fprintf(fp,"电话,姓名,性别,表演名称,表演类别,分数,1,2,3,4,5,6,7,8,9,10,最后得分\n");
+    fprintf(fp,"电话,姓名,性别,表演名称,表演类别,分数,1,2,3,4,5,6,7,8,9,最后得分\n");
     for(i=0;i<=L->last;i++)
     {
         fprintf(fp,"%.0lf,",L->elem[i].num);
@@ -507,38 +506,66 @@ void save(seqlist *L)
 
 void login(seqlist *L)
 {
-    char file_name[] = "选手信息.csv";
-    FILE *fp;
-    fp = fopen("选手信息.csv", "a+");
 
+    FILE *fp = NULL;
 
-    char line[MAX_LINE_SIZE];
-    char *result = NULL;
+	char *line,*record;
 
-    while(fgets(line, MAX_LINE_SIZE, fp) != NULL) 
+	char buffer[1024];
+
+	if ((fp = fopen("选手信息.csv", "r")) != NULL)
+
 	{
-        result = strtok(line, ",");
-        int i = 0;
-        while( result != NULL )
+
+		fseek(fp, 170L, SEEK_SET);  //定位到第二行，每个英文字符大小为1
+
+		char delims[] = ",";
+
+		char *result = NULL;
+
+		int j = 0;
+
+		while ((line = fgets(buffer, sizeof(buffer), fp))!=NULL)//当没有读取到文件末尾时循环继续
+
 		{
 
-            if(i!=0)
-			{
-                printf("%d\t", atoi(result));
-            }
+			record = strtok(line, ",");
 
-            else
-			{
-                printf("%s\t", result);
-                i++;
-            }
-            result = strtok(NULL, ",");
-        }
-        printf("\n");
-    }
+			while (record != NULL)//读取每一行的数据
 
-    fclose (fp);
-   
+			{
+
+				if (strcmp(record, "NULL:") == 0)//当读取到NULL那一行时，不再继续读取
+
+					return 0;
+
+				printf("%s ", record);//将读取到的每一个数据打印出来
+
+				if (j == 10)  //只需读取前9列
+
+					break;
+
+				record = strtok(NULL, ",");
+
+				j++;
+
+			}
+
+			printf("\n");
+
+			j = 0;
+
+ 
+
+		}
+
+		fclose(fp);
+
+		fp = NULL;
+
+	}
+	
+	
 
 }
 
